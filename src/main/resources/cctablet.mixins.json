@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.cctablet.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "cctablet.refmap.json",
+  "mixins": [
+    "PocketServerComputerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

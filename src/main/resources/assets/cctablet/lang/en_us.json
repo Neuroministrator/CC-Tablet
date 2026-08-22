@@ -1,0 +1,5 @@
+{
+  "item.cctablet.tablet": "Advanced Tablet Computer",
+  "item.cctablet.tablet.upgraded": "%s Advanced Tablet Computer",
+  "tooltip.cctablet.built_in_speaker": "Built-in speaker"
+}
