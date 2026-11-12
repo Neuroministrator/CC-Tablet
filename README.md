@@ -1,53 +1,53 @@
-# CC: Tablet (Forge 1.20.1)
+# cc: tablet (forge 1.20.1)
 
-A CC:Tweaked addon for Forge 1.20.1 which adds two portable Advanced computers:
+A CC:Tweaked addon for Forge 1.20.1 that adds two portable advanced computers:
 
-- **Advanced Tablet Computer** — a wider handheld computer with a **40×20** terminal.
-- **Advanced Smartwatch Computer** — a wrist-mounted computer with an **18×10** terminal, Curios equipment slot, built-in locator, built-in speaker, and dedicated watch-style GUI.
+- **advanced tablet computer**: a wider handheld computer with a **40×20** terminal.
+- **advanced smartwatch computer**: a wrist computer with an **18×10** terminal, Curios slot, built-in locator and speaker, plus its own watch-style screen.
 
-Both devices keep CC:Tweaked's normal CraftOS environment and pocket-computer functionality while adding their own hardware and presentation.
+Both devices still use the usual CC:Tweaked CraftOS and pocket computer stuff, with some extra hardware and their own look.
 
-## Target versions
+## target versions
 
 - Minecraft 1.20.1
 - Forge 47.4.10 or newer 47.4.x
 - CC:Tweaked 1.120.2
 - Curios 5.14.1 or newer 5.x
 - Java 17
-- Install the built JAR on **both the dedicated server and every client**.
+- put the built JAR on **the dedicated server and every client**.
 
-This mod intentionally uses CC:Tweaked implementation classes in addition to its public API. CC:Tweaked does not expose all of the hooks required for per-item pocket terminal sizes and the smartwatch presentation, so CC:Tablet is pinned tightly to CC:Tweaked 1.120.2.
+This mod uses some CC:Tweaked implementation classes as well as its public API. The public API doesn't have all the hooks needed for per-item terminal sizes and the watch screen, so this version is tied pretty closely to CC:Tweaked 1.120.2.
 
-## Devices
+## devices
 
-### Advanced Tablet Computer
+### advanced tablet computer
 
-The tablet is a larger Advanced Pocket Computer intended for programs which benefit from more screen space.
+The tablet is a bigger Advanced Pocket Computer for programs that want a bit more screen space.
 
 - Item ID: `cctablet:tablet`
 - Terminal size: **40 columns × 20 rows**
-- Computer family: **Advanced**
+- Computer family: **advanced**
 - Built-in speaker on the `right` side
 - Normal removable pocket upgrade remains available on the back
-- Uses CC:Tweaked's normal pocket-computer lifecycle, CraftOS, IDs, filesystem, HTTP, rednet APIs, terminal networking, mouse/touch events, and upgrade system
+- Uses the normal CC:Tweaked pocket-computer lifecycle, CraftOS, IDs, filesystem, HTTP, rednet, terminal networking, mouse and touch events, and upgrades
 
-The normal CC:Tweaked pocket upgrade recipe works because the tablet is a `PocketComputerItem` subclass. For example, an **Advanced Wireless Modem (Ender Modem)** can be installed using the normal pocket-computer upgrade recipe.
+The regular CC:Tweaked pocket upgrade recipe works since the tablet extends `PocketComputerItem`. So you can install an **Advanced Wireless Modem (Ender Modem)** with the usual recipe too.
 
-### Advanced Smartwatch Computer
+### advanced smartwatch computer
 
-The smartwatch is a small wearable Advanced computer designed to remain equipped while in use.
+The smartwatch is a small wearable advanced computer that can stay equipped while you use it.
 
 - Item ID: `cctablet:smartwatch`
 - Terminal size: **18 columns × 10 rows**
-- Computer family: **Advanced**
+- Computer family: **advanced**
 - Equipped in a dedicated Curios `watch` slot
 - Built-in locator on the `left` side
 - Built-in speaker on the `right` side
 - Normal removable pocket upgrade remains available on the back
-- Keeps running and ticking while equipped
-- Press **V** by default to open the equipped smartwatch
-- Uses a dedicated smartwatch-shaped GUI instead of CC:Tweaked's normal pocket-computer frame
-- Uses a dedicated wrist renderer when equipped
+- Keeps running while equipped
+- Press **V** by default to open it
+- Has its own watch-shaped screen instead of the regular pocket-computer frame
+- Uses a wrist renderer while equipped
 
 The smartwatch GUI frame is stored as an editable texture at:
 
@@ -55,24 +55,24 @@ The smartwatch GUI frame is stored as an editable texture at:
 assets/cctablet/textures/gui/smartwatch.png
 ```
 
-The live CC:Tweaked terminal is rendered on top of that texture, so changing the PNG changes the watch body without changing the terminal implementation.
+The CC:Tweaked terminal is drawn over this texture. Change the PNG to change the watch body; the terminal code can stay as it is.
 
-## Crafting
+## crafting
 
-### Crafting the tablet
+### crafting the tablet
 
-The tablet conversion recipe uses:
+To convert a pocket computer into a tablet, use:
 
 - 1× Advanced Pocket Computer
 - 2× Gold Ingots
 
-The recipe uses CC:Tweaked's `changeItem` path, so it preserves the source pocket computer's **computer ID, filesystem, label, colour, installed pocket upgrade, and powered-on state**.
+The recipe goes through CC:Tweaked's `changeItem` path, which keeps the original computer's **ID, filesystem, label, colour, installed upgrade, and powered-on state**.
 
-Because this is a custom data-preserving crafting recipe, JEI may not automatically display it like a normal vanilla recipe unless explicit JEI integration is added.
+It's shapeless, so put the Advanced Pocket Computer and two Gold Ingots in separate slots, any arrangement is fine. It shows up in JEI and unlocks in the recipe book when you get an Advanced Pocket Computer. Smartwatches and tablets aren't valid inputs.
 
-### Crafting the smartwatch
+### crafting the smartwatch
 
-The smartwatch is crafted directly and does **not** consume a pocket computer.
+The smartwatch is crafted directly, and does **not** use up a pocket computer.
 
 ```text
 G G G
@@ -85,11 +85,11 @@ Where:
 - `G` = Gold Nugget
 - `C` = Clock
 
-This creates one fresh **Advanced Smartwatch Computer**.
+This makes a fresh **Advanced Smartwatch Computer**.
 
-## Built-in speaker
+## built-in speaker
 
-Both the tablet and smartwatch have a built-in CC:Tweaked pocket speaker on the computer's `right` side.
+Both devices have a built-in CC:Tweaked pocket speaker on the computer's `right` side.
 
 You can find it normally:
 
@@ -103,13 +103,15 @@ or address it directly:
 local speaker = peripheral.wrap("right")
 ```
 
-The speaker uses CC:Tweaked's real `PocketSpeakerPeripheral`, so it supports the normal speaker API including `playNote`, `playSound`, `playAudio`, and `stop`, with CC:Tweaked's normal buffering and lifecycle behaviour.
+It's CC:Tweaked's actual `PocketSpeakerPeripheral`, so the usual speaker calls work: `playNote`, `playSound`, `playAudio`, and `stop`. Buffering and lifecycle are handled the normal way too.
 
 The removable pocket-upgrade slot is still available separately.
 
-## Smartwatch locator
+## smartwatch locator
 
-The smartwatch includes a built-in `locator` peripheral on its `left` side. It reports the live world position of the wearer while the watch is equipped and does not require GPS towers.
+The smartwatch has a built-in `locator` peripheral on the `left`. It reports the wearer's current world position while equipped, no GPS towers needed.
+
+This is its own peripheral API. Use `peripheral.find("locator").getPosition()` instead of `gps.locate()`. CraftOS `gps.locate()` still needs a wireless modem and GPS hosts.
 
 Get the peripheral with:
 
@@ -119,7 +121,7 @@ local locator = peripheral.wrap("left")
 
 ### `getPosition()`
 
-Returns the precise X, Y, and Z coordinates of the wearer/device.
+Returns the wearer's precise X, Y, and Z coordinates.
 
 ```lua
 local x, y, z = locator.getPosition()
@@ -128,7 +130,7 @@ print(x, y, z)
 
 ### `getBlockPosition()`
 
-Returns integer block coordinates.
+Returns whole block coordinates.
 
 ```lua
 local x, y, z = locator.getBlockPosition()
@@ -137,7 +139,7 @@ print(x, y, z)
 
 ### `getDimension()`
 
-Returns the current dimension ID.
+Returns the current dimension id.
 
 ```lua
 print(locator.getDimension())
@@ -146,7 +148,7 @@ print(locator.getDimension())
 
 ### `getFacing()`
 
-Returns the wearer's horizontal facing direction.
+Returns which horizontal direction the wearer is facing.
 
 ```lua
 print(locator.getFacing())
@@ -154,7 +156,7 @@ print(locator.getFacing())
 
 ### `getRotation()`
 
-Returns yaw and pitch in degrees.
+Returns yaw and pitch, in degrees.
 
 ```lua
 local yaw, pitch = locator.getRotation()
@@ -163,7 +165,7 @@ print(yaw, pitch)
 
 ### `locate()`
 
-Returns all locator information in one Lua table.
+Returns all the locator info in one Lua table.
 
 ```lua
 local info = locator.locate()
@@ -190,9 +192,9 @@ yaw
 pitch
 ```
 
-## Smartwatch controls
+## smartwatch controls
 
-When the smartwatch is equipped in the Curios `watch` slot, press:
+With the smartwatch in the Curios `watch` slot, press:
 
 ```text
 V
@@ -200,32 +202,47 @@ V
 
 to open it without removing it from your wrist.
 
-The keybind appears in Minecraft's Controls menu under the **CC:Tablet** category and can be rebound normally.
+The keybind is in Minecraft's Controls menu under **CC:Tablet**. You can change it there.
 
-## Curios integration
+## curios integration
 
-Curios is required for the smartwatch equipment slot.
+Curios is needed for the smartwatch slot.
 
-The mod registers a dedicated:
+The mod adds a:
 
 ```text
 watch
 ```
 
-slot for players and assigns `cctablet:smartwatch` to it.
+slot for players. `cctablet:smartwatch` goes in there.
 
-Internally, CC:Tablet bridges the Curios `watch[0]` stack into CC:Tweaked's pocket-computer holder system so the computer can remain alive, synchronized, and usable while outside the vanilla player inventory.
+Under the hood, CC:Tablet connects the Curios `watch[0]` stack to CC:Tweaked's pocket-computer holder system. That lets the computer stay alive, sync, and work outside the normal player inventory.
 
-## Peripheral layout
+## peripheral layout
 
-### Tablet
+### tablet
 
 ```text
 RIGHT = built-in speaker
 BACK  = removable pocket upgrade
 ```
 
-### Smartwatch
+### universal modem
+
+The standalone `universal_modem` block uses the usual CC:Tweaked API:
+`modem.transmit(channel, replyChannel, message)` still has three arguments.
+It adds configurable range with `modem.setRange(3)` or `modem.setRange(30)`,
+and Ender-style networking with `modem.setRange("ender")`. Use
+`modem.getRange()`, `modem.ignore("ender")`, `modem.allow("ender")`, and
+`modem.isIgnored("ender")` to inspect and control the setting. `modem.getEnder()`
+returns the Ender constant value for Lua environments which cannot expose
+peripheral fields directly.
+
+The modem item is also a CC:Tweaked pocket upgrade. Add it to a regular advanced
+pocket computer, tablet, or smartwatch with the standard upgrade recipe. It uses
+the BACK slot, it isn't built into those devices.
+
+### smartwatch
 
 ```text
 LEFT  = built-in locator
@@ -233,17 +250,17 @@ RIGHT = built-in speaker
 BACK  = removable pocket upgrade
 ```
 
-## Building
+## building
 
-Use **Gradle 8.1.1** with **Java 17**.
+Build with **Gradle 8.1.1** and **Java 17**.
 
-If needed, generate/update the wrapper with:
+If you need to make or update the wrapper, run:
 
 ```bash
 gradle wrapper --gradle-version 8.1.1
 ```
 
-The build requires Curios on the compile/runtime classpath. With CurseMaven configured, the dependency is:
+Curios needs to be on the compile and runtime classpath. With CurseMaven set up, add:
 
 ```gradle
 implementation fg.deobf("curse.maven:curios-309927:6418456")
@@ -261,33 +278,33 @@ or on Windows:
 gradlew.bat clean build
 ```
 
-The reobfuscated JAR will be produced under:
+The reobfuscated JAR ends up here:
 
 ```text
 build/libs/cctablet-(VERSION).jar
 ```
 
-## Why there are mixins
+## why there are mixins
 
-CC:Tweaked normally creates all pocket computers with the configured pocket terminal dimensions and assumes player-held pocket computers live in vanilla inventory slots. It also applies its own map-like rendering path to pocket computer items.
+CC:Tweaked normally gives pocket computers the configured terminal size and expects player-held computers to be in vanilla inventory slots. It also draws pocket computer items like a map.
 
-CC:Tablet uses small targeted mixins to extend those assumptions without replacing CC:Tweaked's computer implementation:
+CC:Tablet has a few small mixins to handle these cases, while keeping CC:Tweaked's computer implementation:
 
-- **PocketServerComputer mixin** — selects **40×20** for tablets and **18×10** for smartwatches when the server computer is created.
-- **PocketItemRenderer mixin** — provides the correct fallback terminal dimensions before synchronized terminal data is available.
-- **PocketHolder.PlayerHolder bridge** — redirects the smartwatch's synthetic holder slot to Curios `watch[0]`.
-- **Client rendering hook** — prevents the smartwatch from being forced through CC:Tweaked's normal two-handed/map-like pocket-computer item presentation.
+- **PocketServerComputer mixin**: picks **40×20** for tablets and **18×10** for watches when the server computer is created.
+- **PocketItemRenderer mixin**: gives the right fallback terminal size before synced terminal data arrives.
+- **PocketHolder.PlayerHolder bridge**: points the watch's synthetic holder slot at Curios `watch[0]`.
+- **Client rendering hook**: stops CC:Tweaked from drawing the watch like its regular two-handed, map-like pocket computer item.
 
-The smartwatch then uses CC:Tweaked's normal terminal widget and computer input handling inside a custom watch-shaped screen, preserving normal keyboard, mouse, terminal, and upload behaviour.
+The smartwatch uses CC:Tweaked's regular terminal widget and input handling inside its watch screen. Keyboard, mouse, terminal, and upload behaviour still work as usual.
 
-## Changelog
+## changelog
 
 ### 0.2.3
 
-- Added the **Advanced Smartwatch Computer**.
-- Added a dedicated Curios `watch` equipment slot.
+- Added the **advanced smartwatch computer**.
+- Added a Curios `watch` slot.
 - Added an **18×10** smartwatch terminal.
-- Added a default **V** keybind for opening the equipped smartwatch.
+- Added a default **V** keybind to open the equipped watch.
 - Added a custom smartwatch GUI and editable `textures/gui/smartwatch.png` frame.
 - Added a dedicated smartwatch wrist renderer.
 - Added a built-in `locator` peripheral on the smartwatch's `left` side.
@@ -299,7 +316,7 @@ The smartwatch then uses CC:Tweaked's normal terminal widget and computer input 
 
 ### 0.2.2
 
-- Lowkey forgot
+- kinda forgot what changed here
 
 
 ### 0.2.1
