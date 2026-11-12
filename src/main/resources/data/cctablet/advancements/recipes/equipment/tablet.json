@@ -1,0 +1,17 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_pocket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["computercraft:pocket_computer_advanced"]}]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {"recipe": "cctablet:tablet"}
+    }
+  },
+  "requirements": [["has_pocket", "has_the_recipe"]],
+  "rewards": {"recipes": ["cctablet:tablet"]}
+}
