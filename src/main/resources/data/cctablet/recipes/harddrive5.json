@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["BDB", "G1G", "BDB"],
+  "key": {
+    "B": { "item": "minecraft:book" },
+    "D": { "item": "minecraft:diamond" },
+    "G": { "item": "minecraft:gold_ingot" },
+    "1": { "item": "cctablet:harddrive1" }
+  },
+  "result": { "item": "cctablet:harddrive5", "count": 1 }
+}

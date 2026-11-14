@@ -1,15 +1,19 @@
 package dev.cctablet.block;
 
-import dev.cctablet.peripheral.UniversalModemPeripheral;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.shared.Capabilities;
+import dev.cctablet.peripheral.UniversalModemPeripheral;
+import dev.cctablet.registry.ModBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -20,16 +24,20 @@ public final class UniversalModemBlockEntity extends BlockEntity {
     private final LazyOptional<IPeripheral> peripheralCapability;
 
     public UniversalModemBlockEntity(BlockPos pos, BlockState state) {
-        super(dev.cctablet.registry.ModBlockEntities.UNIVERSAL_MODEM.get(), pos, state);
+        super(ModBlockEntities.UNIVERSAL_MODEM.get(), pos, state);
         modem = new UniversalModemPeripheral(
-            () -> (net.minecraft.server.level.ServerLevel) level,
-            () -> new net.minecraft.world.phys.Vec3(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5)
+            () -> (ServerLevel) level,
+            () -> new Vec3(
+                worldPosition.getX() + 0.5,
+                worldPosition.getY() + 0.5,
+                worldPosition.getZ() + 0.5
+            )
         );
         peripheralCapability = LazyOptional.of(() -> modem);
     }
 
     public IPeripheral getPeripheral(Direction side) {
-        return side == null || side == getBlockState().getValue(net.minecraft.world.level.block.DirectionalBlock.FACING)
+        return side == null || side == getBlockState().getValue(DirectionalBlock.FACING)
             ? modem
             : null;
     }

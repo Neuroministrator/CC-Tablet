@@ -10,6 +10,7 @@ import dan200.computercraft.shared.pocket.core.PocketBrain;
 import dan200.computercraft.shared.pocket.core.PocketHolder;
 import dan200.computercraft.shared.pocket.items.PocketComputerItem;
 import dan200.computercraft.shared.pocket.peripherals.PocketSpeakerPeripheral;
+import dev.cctablet.CCTablet;
 import dev.cctablet.curios.SmartwatchCurios;
 import dev.cctablet.peripheral.SmartwatchLocatorPeripheral;
 import dev.cctablet.TabletTerminalContext;
@@ -32,6 +33,11 @@ public final class SmartwatchComputerItem extends PocketComputerItem implements 
 
     public SmartwatchComputerItem(Properties properties) {
         super(properties, ComputerFamily.ADVANCED);
+    }
+
+    @Override
+    public String getCreatorModId(ItemStack stack) {
+        return CCTablet.MOD_ID;
     }
 
     @Override

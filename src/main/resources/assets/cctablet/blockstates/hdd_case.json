@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "cctablet:block/hdd_case" },
+    "facing=east": { "model": "cctablet:block/hdd_case", "y": 90 },
+    "facing=south": { "model": "cctablet:block/hdd_case", "y": 180 },
+    "facing=west": { "model": "cctablet:block/hdd_case", "y": 270 }
+  }
+}

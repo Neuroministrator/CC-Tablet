@@ -6,6 +6,7 @@ import dan200.computercraft.shared.pocket.core.PocketBrain;
 import dan200.computercraft.shared.pocket.core.PocketHolder;
 import dan200.computercraft.shared.pocket.items.PocketComputerItem;
 import dan200.computercraft.shared.pocket.peripherals.PocketSpeakerPeripheral;
+import dev.cctablet.CCTablet;
 import dev.cctablet.TabletTerminalContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,6 +23,11 @@ public final class TabletComputerItem extends PocketComputerItem {
 
     public TabletComputerItem(Properties properties) {
         super(properties, ComputerFamily.ADVANCED);
+    }
+
+    @Override
+    public String getCreatorModId(ItemStack stack) {
+        return CCTablet.MOD_ID;
     }
 
     @Override

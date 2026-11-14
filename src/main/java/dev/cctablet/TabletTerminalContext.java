@@ -37,24 +37,12 @@ public final class TabletTerminalContext {
         return ItemStack.EMPTY;
     }
 
-    public static boolean isTablet(PocketHolder holder) {
-        return getStack(holder).getItem() instanceof TabletComputerItem;
-    }
-
-    public static boolean isSmartwatch(PocketHolder holder) {
-        return getStack(holder).getItem() instanceof SmartwatchComputerItem;
-    }
-
     public static int widthFor(PocketHolder holder, int original) {
-        if (isTablet(holder)) return WIDTH;
-        if (isSmartwatch(holder)) return SMARTWATCH_WIDTH;
-        return original;
+        return widthFor(getStack(holder), original);
     }
 
     public static int heightFor(PocketHolder holder, int original) {
-        if (isTablet(holder)) return HEIGHT;
-        if (isSmartwatch(holder)) return SMARTWATCH_HEIGHT;
-        return original;
+        return heightFor(getStack(holder), original);
     }
 
     public static int widthFor(ItemStack stack, int original) {
@@ -69,10 +57,7 @@ public final class TabletTerminalContext {
         return original;
     }
 
-    /**
-     * pocket computers are cached by id, so swapping the item doesn't make a new terminal.
-     * set the device size next time that cached brain gets used. bit of a weird edge case.
-     */
+    /** Pocket computers reuse cached brains after item swaps, so update the terminal size on reuse. */
     public static void applyDeviceTerminalSize(PocketBrain brain, ItemStack stack) {
         if (!((Object) brain.computer() instanceof ServerComputerTerminalAccess terminal)) return;
 

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["IRI", "RDR", "IRI"],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "R": { "item": "minecraft:redstone" },
+    "D": { "item": "cctablet:disc" }
+  },
+  "result": { "item": "cctablet:harddrive1", "count": 1 }
+}

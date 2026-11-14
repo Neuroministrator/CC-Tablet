@@ -21,9 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import net.minecraft.nbt.CompoundTag;
 
-/** a wireless modem with its own range setting and optional cross-dimension mode. */
+/** A wireless modem with configurable range and optional cross-dimension networking. */
 public final class UniversalModemPeripheral implements IPeripheral, PacketSender, PacketReceiver {
-    /** special value for ender-style networking, accepted by setRange/ignore/allow. */
+    /** Value used to select Ender-style networking. */
     public static final String ENDER = "ender";
 
     private enum TransmissionType { NORMAL, ENDER }
@@ -176,7 +176,6 @@ public final class UniversalModemPeripheral implements IPeripheral, PacketSender
         state.closeAll();
     }
 
-    /** keep the normal three-argument CC:Tweaked transmit call, no extra stuff here. */
     @LuaFunction
     public final void transmit(int channel, int replyChannel, Object message) throws LuaException {
         validateChannel(channel);
@@ -237,7 +236,6 @@ public final class UniversalModemPeripheral implements IPeripheral, PacketSender
         return ignoreEnder;
     }
 
-    /** callable fallback for lua setups that can't read peripheral fields directly. */
     @LuaFunction(value = "getEnder")
     public final String getEnder() {
         return ENDER;
@@ -289,14 +287,12 @@ public final class UniversalModemPeripheral implements IPeripheral, PacketSender
             return modem.lastTransmission == TransmissionType.ENDER;
         }
 
-        // some modem addons expose ender or advanced inter-dimensional mode
-        // on the sender. check for that optional method without depending on
-        // the addon, so regular CC:Tweaked modems still work too.
+        // Check for an optional method without depending on a specific modem addon.
         try {
             var method = sender.getClass().getMethod("isInterdimensional");
             return method.getReturnType() == boolean.class && Boolean.TRUE.equals(method.invoke(sender));
         } catch (ReflectiveOperationException | SecurityException ignored) {
-            // class names aren't enough to tell us what networking it can do.
+            // Unknown sender types are treated as normal transmissions.
             return false;
         }
     }
