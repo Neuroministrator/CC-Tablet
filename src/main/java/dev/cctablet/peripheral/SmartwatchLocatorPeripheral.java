@@ -1,16 +1,18 @@
 package dev.cctablet.peripheral;
 
 import dan200.computercraft.api.lua.LuaFunction;
+import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.shared.pocket.core.PocketBrain;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-// this is the built in locator
 public final class SmartwatchLocatorPeripheral implements IPeripheral {
     private final PocketBrain brain;
 
@@ -23,23 +25,21 @@ public final class SmartwatchLocatorPeripheral implements IPeripheral {
         return "locator";
     }
 
-    // this gets the exact position
     @LuaFunction(mainThread = true)
-    public final Object[] getPosition() {
+    public final Object[] getPosition() throws LuaException {
         var pos = position();
         return new Object[]{pos[0], pos[1], pos[2]};
     }
 
-    // this gets the block position
     @LuaFunction(mainThread = true)
-    public final Object[] getBlockPosition() {
+    public final Object[] getBlockPosition() throws LuaException {
         var entity = brain.getEntity();
         if (entity != null) {
             var block = entity.blockPosition();
             return new Object[]{block.getX(), block.getY(), block.getZ()};
         }
 
-        var pos = brain.getPosition();
+        var pos = requirePosition();
         return new Object[]{
             (int) Math.floor(pos.x),
             (int) Math.floor(pos.y),
@@ -47,9 +47,9 @@ public final class SmartwatchLocatorPeripheral implements IPeripheral {
         };
     }
 
-    @LuaFunction
-    public final String getDimension() {
-        return brain.getLevel().dimension().location().toString();
+    @LuaFunction(mainThread = true)
+    public final String getDimension() throws LuaException {
+        return requireLevel().dimension().location().toString();
     }
 
     @LuaFunction(mainThread = true)
@@ -58,7 +58,6 @@ public final class SmartwatchLocatorPeripheral implements IPeripheral {
         return entity instanceof LivingEntity living ? living.getDirection().getName() : "unknown";
     }
 
-    // this gets the rotation
     @LuaFunction(mainThread = true)
     public final Object[] getRotation() {
         var entity = brain.getEntity();
@@ -67,9 +66,8 @@ public final class SmartwatchLocatorPeripheral implements IPeripheral {
             : new Object[]{(double) entity.getYRot(), (double) entity.getXRot()};
     }
 
-    // this gets all locator data
     @LuaFunction(mainThread = true)
-    public final Map<String, Object> locate() {
+    public final Map<String, Object> locate() throws LuaException {
         var entity = brain.getEntity();
         var xyz = position(entity);
 
@@ -94,23 +92,34 @@ public final class SmartwatchLocatorPeripheral implements IPeripheral {
         result.put("blockX", blockX);
         result.put("blockY", blockY);
         result.put("blockZ", blockZ);
-        result.put("dimension", brain.getLevel().dimension().location().toString());
+        result.put("dimension", requireLevel().dimension().location().toString());
         result.put("facing", entity instanceof LivingEntity living ? living.getDirection().getName() : "unknown");
         result.put("yaw", entity == null ? 0.0D : (double) entity.getYRot());
         result.put("pitch", entity == null ? 0.0D : (double) entity.getXRot());
         return result;
     }
 
-    private double[] position() {
+    private double[] position() throws LuaException {
         return position(brain.getEntity());
     }
 
-    private double[] position(@Nullable Entity entity) {
+    private double[] position(@Nullable Entity entity) throws LuaException {
         if (entity != null) return new double[]{entity.getX(), entity.getY(), entity.getZ()};
 
-        // this uses the cached position
-        var pos = brain.getPosition();
+        var pos = requirePosition();
         return new double[]{pos.x, pos.y, pos.z};
+    }
+
+    private Level requireLevel() throws LuaException {
+        var level = brain.getLevel();
+        if (level == null) throw new LuaException("position unavailable");
+        return level;
+    }
+
+    private Vec3 requirePosition() throws LuaException {
+        var position = brain.getPosition();
+        if (position == null) throw new LuaException("position unavailable");
+        return position;
     }
 
     @Override

@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// this uses vanilla hand rendering
 @Mixin(value = ClientHooks.class, remap = false)
 public abstract class ClientHooksMixin {
     @Inject(method = "onRenderHeldItem", at = @At("HEAD"), cancellable = true, remap = false)
@@ -27,7 +26,6 @@ public abstract class ClientHooksMixin {
         CallbackInfoReturnable<Boolean> callback
     ) {
         if (stack.getItem() instanceof SmartwatchComputerItem) {
-            // this lets vanilla draw the watch
             callback.setReturnValue(false);
         }
     }

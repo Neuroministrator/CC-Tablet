@@ -10,8 +10,10 @@ import dan200.computercraft.shared.pocket.core.PocketBrain;
 import dan200.computercraft.shared.pocket.core.PocketHolder;
 import dan200.computercraft.shared.pocket.items.PocketComputerItem;
 import dan200.computercraft.shared.pocket.peripherals.PocketSpeakerPeripheral;
+import dev.cctablet.CCTablet;
 import dev.cctablet.curios.SmartwatchCurios;
 import dev.cctablet.peripheral.SmartwatchLocatorPeripheral;
+import dev.cctablet.TabletTerminalContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +26,6 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
-// this is the smartwatch item
 public final class SmartwatchComputerItem extends PocketComputerItem implements ICurioItem {
     private static final ComputerSide LOCATOR_SIDE = ComputerSide.LEFT;
     private static final ComputerSide SPEAKER_SIDE = ComputerSide.RIGHT;
@@ -35,8 +36,14 @@ public final class SmartwatchComputerItem extends PocketComputerItem implements 
     }
 
     @Override
+    public String getCreatorModId(ItemStack stack) {
+        return CCTablet.MOD_ID;
+    }
+
+    @Override
     public PocketBrain getOrCreateBrain(PocketHolder holder, ItemStack stack) {
         var brain = super.getOrCreateBrain(holder, stack);
+        TabletTerminalContext.applyDeviceTerminalSize(brain, stack);
         ensureBuiltIns(brain);
         return brain;
     }
@@ -46,7 +53,6 @@ public final class SmartwatchComputerItem extends PocketComputerItem implements 
         ensureLocator(brain);
         var speaker = ensureSpeaker(brain);
 
-        // this keeps the upgrade light
         var previousLight = brain.getLight();
         speaker.update();
         var speakerMadeSound = speaker.madeSound();
@@ -70,14 +76,12 @@ public final class SmartwatchComputerItem extends PocketComputerItem implements 
         tick(stack, holder, brain);
     }
 
-    // this opens the watch
     public void openFromWrist(ServerPlayer player, ItemStack stack) {
         var holder = SmartwatchCurios.holder(player);
         var brain = getOrCreateBrain(holder, stack);
         var computer = brain.computer();
         computer.turnOn();
 
-        // this opens the computer menu
         PlatformHelper.get().openMenu(
             player,
             stack.getHoverName(),

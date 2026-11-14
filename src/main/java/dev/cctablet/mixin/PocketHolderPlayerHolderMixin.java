@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// this handles the watch slot
 @Mixin(value = PocketHolder.PlayerHolder.class, remap = false)
 public abstract class PocketHolderPlayerHolderMixin {
     @Inject(method = "isValid", at = @At("HEAD"), cancellable = true, remap = false)

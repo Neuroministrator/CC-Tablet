@@ -9,12 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-// this draws the watch screen
 public final class SmartwatchScreen extends AbstractComputerScreen<AbstractComputerMenu> {
     private static final int BEZEL = 9;
     private static final int SIDEBAR_HEIGHT = 38;
 
-    // this sets the texture size
     private static final int TEXTURE_WIDTH = 148;
     private static final int TEXTURE_HEIGHT = 138;
     private static final int TEXTURE_TOP_OFFSET = 15;

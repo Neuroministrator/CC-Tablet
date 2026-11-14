@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "DED",
+    "RMR",
+    "DED"
+  ],
+  "key": {
+    "D": {"item": "minecraft:diamond"},
+    "E": {"item": "minecraft:ender_pearl"},
+    "R": {"item": "minecraft:redstone"},
+    "M": {"item": "computercraft:wireless_modem_advanced"}
+  },
+  "result": {
+    "item": "cctablet:universal_modem",
+    "count": 1
+  }
+}

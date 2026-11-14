@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-// this sets the terminal size
 @Mixin(value = PocketServerComputer.class, remap = false)
 public abstract class PocketServerComputerMixin {
     @Redirect(

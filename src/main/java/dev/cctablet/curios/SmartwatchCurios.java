@@ -6,11 +6,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CuriosApi;
 
-// this handles the curios slot
 public final class SmartwatchCurios {
     public static final String SLOT_ID = "watch";
 
-    // this is the fake inventory slot
     public static final int SYNTHETIC_PLAYER_SLOT = -4242;
 
     private SmartwatchCurios() {
@@ -31,7 +29,6 @@ public final class SmartwatchCurios {
             .orElse(ItemStack.EMPTY);
     }
 
-    // this syncs the watch slot
     public static void setChanged(ServerPlayer player) {
         CuriosApi.getCuriosInventory(player).resolve()
             .flatMap(handler -> handler.getStacksHandler(SLOT_ID))
@@ -40,7 +37,10 @@ public final class SmartwatchCurios {
                 if (stacks.getSlots() <= 0) return;
 
                 var stack = stacks.getStackInSlot(0);
-                if (!stack.isEmpty()) stacks.setStackInSlot(0, stack);
+                if (!stack.isEmpty()) {
+                    CuriosApi.getCuriosInventory(player).resolve()
+                        .ifPresent(inventory -> inventory.setEquippedCurio(SLOT_ID, 0, stack));
+                }
             });
     }
 }

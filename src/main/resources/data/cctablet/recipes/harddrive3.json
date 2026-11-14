@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [" S ", "IDI", " S "],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "D": { "item": "minecraft:diamond" },
+    "S": { "item": "cctablet:stacked_discs" }
+  },
+  "result": { "item": "cctablet:harddrive3", "count": 1 }
+}

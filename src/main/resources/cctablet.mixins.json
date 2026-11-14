@@ -6,7 +6,9 @@
   "refmap": "cctablet.refmap.json",
   "mixins": [
     "PocketServerComputerMixin",
-    "PocketHolderPlayerHolderMixin"
+    "ServerComputerTerminalMixin",
+    "PocketHolderPlayerHolderMixin",
+    "UniversalModemNetworkMixin"
   ],
   "client": [
     "PocketItemRendererMixin",

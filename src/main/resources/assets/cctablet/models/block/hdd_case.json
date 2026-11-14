@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "up": "cctablet:block/hdd_case_top",
+    "down": "cctablet:block/hdd_case_bottom",
+    "north": "cctablet:block/hdd_case_front",
+    "south": "cctablet:block/hdd_case_side",
+    "east": "cctablet:block/hdd_case_side",
+    "west": "cctablet:block/hdd_case_side",
+    "particle": "cctablet:block/hdd_case_side"
+  }
+}

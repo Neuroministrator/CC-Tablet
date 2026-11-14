@@ -1,12 +1,13 @@
 package dev.cctablet;
 
 import dan200.computercraft.shared.pocket.core.PocketHolder;
+import dan200.computercraft.shared.pocket.core.PocketBrain;
 import dev.cctablet.curios.SmartwatchCurios;
 import dev.cctablet.item.SmartwatchComputerItem;
 import dev.cctablet.item.TabletComputerItem;
+import dev.cctablet.api.ServerComputerTerminalAccess;
 import net.minecraft.world.item.ItemStack;
 
-// this picks terminal sizes
 public final class TabletTerminalContext {
     public static final int WIDTH = 40;
     public static final int HEIGHT = 20;
@@ -36,24 +37,12 @@ public final class TabletTerminalContext {
         return ItemStack.EMPTY;
     }
 
-    public static boolean isTablet(PocketHolder holder) {
-        return getStack(holder).getItem() instanceof TabletComputerItem;
-    }
-
-    public static boolean isSmartwatch(PocketHolder holder) {
-        return getStack(holder).getItem() instanceof SmartwatchComputerItem;
-    }
-
     public static int widthFor(PocketHolder holder, int original) {
-        if (isTablet(holder)) return WIDTH;
-        if (isSmartwatch(holder)) return SMARTWATCH_WIDTH;
-        return original;
+        return widthFor(getStack(holder), original);
     }
 
     public static int heightFor(PocketHolder holder, int original) {
-        if (isTablet(holder)) return HEIGHT;
-        if (isSmartwatch(holder)) return SMARTWATCH_HEIGHT;
-        return original;
+        return heightFor(getStack(holder), original);
     }
 
     public static int widthFor(ItemStack stack, int original) {
@@ -66,5 +55,16 @@ public final class TabletTerminalContext {
         if (stack.getItem() instanceof TabletComputerItem) return HEIGHT;
         if (stack.getItem() instanceof SmartwatchComputerItem) return SMARTWATCH_HEIGHT;
         return original;
+    }
+
+    /** Pocket computers reuse cached brains after item swaps, so update the terminal size on reuse. */
+    public static void applyDeviceTerminalSize(PocketBrain brain, ItemStack stack) {
+        if (!((Object) brain.computer() instanceof ServerComputerTerminalAccess terminal)) return;
+
+        if (stack.getItem() instanceof TabletComputerItem) {
+            terminal.cctablet$resizeTerminal(WIDTH, HEIGHT);
+        } else if (stack.getItem() instanceof SmartwatchComputerItem) {
+            terminal.cctablet$resizeTerminal(SMARTWATCH_WIDTH, SMARTWATCH_HEIGHT);
+        }
     }
 }

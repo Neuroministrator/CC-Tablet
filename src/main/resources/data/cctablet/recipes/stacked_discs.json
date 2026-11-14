@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "cctablet:disc" },
+    { "item": "cctablet:disc" },
+    { "item": "cctablet:disc" }
+  ],
+  "result": { "item": "cctablet:stacked_discs", "count": 1 }
+}

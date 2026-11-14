@@ -6,6 +6,8 @@ import dan200.computercraft.shared.pocket.core.PocketBrain;
 import dan200.computercraft.shared.pocket.core.PocketHolder;
 import dan200.computercraft.shared.pocket.items.PocketComputerItem;
 import dan200.computercraft.shared.pocket.peripherals.PocketSpeakerPeripheral;
+import dev.cctablet.CCTablet;
+import dev.cctablet.TabletTerminalContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +17,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-// this is the tablet item
 public final class TabletComputerItem extends PocketComputerItem {
     private static final ComputerSide BUILT_IN_SPEAKER_SIDE = ComputerSide.RIGHT;
     private static final int BUILT_IN_SPEAKER_LIGHT = 0x3320FC;
@@ -25,8 +26,14 @@ public final class TabletComputerItem extends PocketComputerItem {
     }
 
     @Override
+    public String getCreatorModId(ItemStack stack) {
+        return CCTablet.MOD_ID;
+    }
+
+    @Override
     public PocketBrain getOrCreateBrain(PocketHolder holder, ItemStack stack) {
         var brain = super.getOrCreateBrain(holder, stack);
+        TabletTerminalContext.applyDeviceTerminalSize(brain, stack);
         ensureBuiltInSpeaker(brain);
         return brain;
     }
@@ -35,16 +42,13 @@ public final class TabletComputerItem extends PocketComputerItem {
     public void tick(ItemStack stack, PocketHolder holder, PocketBrain brain) {
         var speaker = ensureBuiltInSpeaker(brain);
 
-        // this keeps the upgrade light
         var previousLight = brain.getLight();
         speaker.update();
         var speakerMadeSound = speaker.madeSound();
         brain.setLight(previousLight);
 
-        // this updates the pocket state
         super.tick(stack, holder, brain);
 
-        // this lets the speaker use the light
         if (brain.getUpgrade() == null) {
             brain.setLight(speakerMadeSound ? BUILT_IN_SPEAKER_LIGHT : -1);
         }
@@ -64,4 +68,5 @@ public final class TabletComputerItem extends PocketComputerItem {
         brain.computer().setPeripheral(BUILT_IN_SPEAKER_SIDE, speaker);
         return speaker;
     }
+
 }

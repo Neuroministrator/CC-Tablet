@@ -9,7 +9,6 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-// this swaps in the watch screen
 @Mod.EventBusSubscriber(modid = CCTablet.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class SmartwatchScreenHooks {
     private SmartwatchScreenHooks() {
@@ -21,6 +20,7 @@ public final class SmartwatchScreenHooks {
         if (!(screen instanceof ComputerScreen<?> computerScreen)) return;
 
         var menu = computerScreen.getMenu();
+        if (menu.getDisplayStack().isEmpty()) return;
         if (!(menu.getDisplayStack().getItem() instanceof SmartwatchComputerItem)) return;
 
         var player = Minecraft.getInstance().player;

@@ -1,21 +1,21 @@
 package dev.cctablet.recipe;
 
-import dan200.computercraft.shared.computer.core.ComputerFamily;
+import dan200.computercraft.shared.ModRegistry;
 import dan200.computercraft.shared.pocket.items.PocketComputerItem;
-import dev.cctablet.item.TabletComputerItem;
 import dev.cctablet.registry.ModItems;
 import dev.cctablet.registry.ModRecipes;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-// this turns pockets into tablets
 public final class TabletRecipe extends CustomRecipe {
     public TabletRecipe(ResourceLocation id, CraftingBookCategory category) {
         super(id, category);
@@ -69,7 +69,6 @@ public final class TabletRecipe extends CustomRecipe {
         var result = pocketItem.changeItem(pocketStack, ModItems.TABLET.get());
         if (result.isEmpty()) return ItemStack.EMPTY;
 
-        // this keeps the power state
         var sourceTag = pocketStack.getTag();
         if (sourceTag != null && sourceTag.contains(PocketComputerItem.NBT_ON)) {
             result.getOrCreateTag().putBoolean(
@@ -82,9 +81,20 @@ public final class TabletRecipe extends CustomRecipe {
     }
 
     private static boolean isConvertiblePocket(ItemStack stack) {
-        return stack.getItem() instanceof PocketComputerItem pocket
-            && !(pocket instanceof TabletComputerItem)
-            && pocket.getFamily() == ComputerFamily.ADVANCED;
+        return stack.is(ModRegistry.Items.POCKET_COMPUTER_ADVANCED.get());
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return false;
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return NonNullList.of(Ingredient.EMPTY,
+            Ingredient.of(ModRegistry.Items.POCKET_COMPUTER_ADVANCED.get()),
+            Ingredient.of(Items.GOLD_INGOT),
+            Ingredient.of(Items.GOLD_INGOT));
     }
 
     @Override

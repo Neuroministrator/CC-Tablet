@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["IGI", "RDR", "IGI"],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "G": { "item": "minecraft:gold_ingot" },
+    "R": { "item": "minecraft:redstone" },
+    "D": { "item": "cctablet:stacked_discs" }
+  },
+  "result": { "item": "cctablet:harddrive2", "count": 1 }
+}

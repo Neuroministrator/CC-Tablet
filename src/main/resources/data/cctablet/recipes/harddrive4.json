@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["SGS", "GDG", "SGS"],
+  "key": {
+    "G": { "item": "minecraft:gold_ingot" },
+    "D": { "item": "minecraft:diamond" },
+    "S": { "item": "cctablet:stacked_discs" }
+  },
+  "result": { "item": "cctablet:harddrive4", "count": 1 }
+}
